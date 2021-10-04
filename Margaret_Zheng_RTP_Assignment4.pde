@@ -97,15 +97,14 @@ void draw(){
   for (int i =0; i< num_wid; i++){
     for (int j = 0; j < num_hgt; j++){
         blocks[i][j].display();
-        //blocks[i][j].colorDrift(2);
-        
+        //blocks[i][j].colorDrift(2); 
      }
    }
  }
 void mouseMoved(){
   blocks[mouseX/side][mouseY/side].updateStatus();
-  //blocks[mouseX/side][mouseY/side].colorDrift(100);
+  blocks[mouseX/side][mouseY/side].colorDrift(100);
   println(mouseX,mouseY, mouseX/side, mouseY/side, blocks[mouseX/side][mouseY/side].getStatus());
   redraw();
-  saveFrame("Assignment4_demo1.png");
+  saveFrame("Assignment4_demo3.png");
 }
