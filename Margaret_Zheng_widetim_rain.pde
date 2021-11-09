@@ -1,10 +1,9 @@
 import processing.video.*; //<>// //<>//
 Capture cam;
-int NUM_LETTERS = 20;
-ArrayList<DropLetter> letters = new ArrayList<DropLetter>();
+int NUM_OF_TIMS = 25;
+ArrayList<DropLetter> tim = new ArrayList<DropLetter>();
 PImage wide_tim;
 int speed = 2;
-
 
 class DropLetter{
   /* for each letter that drops down, it's an object!
@@ -26,20 +25,14 @@ class DropLetter{
   } 
  
   //functions
-  
-  int getX(){
-    return x_pos;
-  }
-  int getY(){
-    return y_pos;
-  }
+  int getX(){return x_pos;}
+  int getY(){return y_pos;}
   void display(){
     //to be written with wide tim
-    wide_tim.resize(0,width/NUM_LETTERS);
+    wide_tim.resize(0,width/NUM_OF_TIMS);
     image(wide_tim, x_pos,y_pos);
   }
   
- 
   void update(boolean isBlanc, String mode){
     //if detects white pixel then drop down, otherwise do nothing
     if (mode == "light"){
@@ -58,7 +51,6 @@ class DropLetter{
   }
 }
 
-
 //other helper functions
 
 //1. remove spaces in given string (copied from Assignment 5 code)
@@ -73,7 +65,7 @@ String remove_spaces(String original){
 }
 
 void setup(){
-  size(800,600);
+  size(1200,900);
   wide_tim = loadImage("wide_tim.png");
   cam = new Capture(this,width,height);
   cam.start();
@@ -83,11 +75,10 @@ void setup(){
   String new_str = remove_spaces(str);
   print(new_str);
  
-  for (int i=0; i<NUM_LETTERS; i++){
-  letters.add(new DropLetter(speed,i*width/NUM_LETTERS, 0));
+  for (int i=0; i<NUM_OF_TIMS; i++){
+  tim.add(new DropLetter(speed,i*width/NUM_OF_TIMS, 0));
   }
 }
-
 
 void draw(){
   if (cam.available()){
@@ -98,28 +89,22 @@ void draw(){
   scale(-1,1);
   translate(-width,0);
   image(cam,0,0);
-  popMatrix();
-
   filter(THRESHOLD,mouseX*1.0/width);
-  //print(mouseX*1.0/width);
+  popMatrix();
+  
   PImage c = get();
   loadPixels();
   
   //the actual display image display
-  
-  //fill(255);
-  //rect(0,0,width,height);
-  //tint(150,200,205,100);
-  
   pushMatrix();
   scale(-1,1);
   translate(-width,0);
   image(cam,0,0);
   popMatrix();
-
-  for (DropLetter l: letters){
+ 
+  for (DropLetter l: tim){
     l.display();
     //light mode is for light bkgd, dark mode is for dark bkgd
-    l.update((c.get(l.getX(),max(0,l.getY())+width/NUM_LETTERS/2)==-1),"light"); 
+    l.update((c.get(l.getX(),max(0,l.getY())+width/NUM_OF_TIMS/2)==-1),"light"); 
   }
 }
